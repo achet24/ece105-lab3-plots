@@ -9,6 +9,7 @@ Usage
     python generate_plots.py
 """
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def generate_data(seed):
@@ -120,3 +121,32 @@ def plot_boxplot(sensor_a, sensor_b, ax):
     ax.set_ylabel('Temperature (deg C)')
     ax.set_title('Box Plot Comparison of Sensor A and B Temperatures')
     ax.legend()
+
+
+def main():
+    """Generate synthetic sensor data, build plots, and save the figure.
+
+    This function creates the full figure for the sensor analysis by:
+    - generating reproducible sensor data,
+    - drawing a scatter plot, histogram, and box plot on a 1x3 subplot grid,
+    - adjusting the layout, and
+    - saving the result to sensor_analysis.png.
+
+    Returns
+    -------
+    None
+        Saves the figure to disk and does not return any value.
+    """
+    sensor_a, sensor_b, timestamps = generate_data(seed=2682)
+
+    fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(18, 5))
+    plot_scatter(sensor_a, sensor_b, timestamps, axes[0])
+    plot_histogram(sensor_a, sensor_b, axes[1])
+    plot_boxplot(sensor_a, sensor_b, axes[2])
+
+    fig.tight_layout()
+    fig.savefig('sensor_analysis.png', dpi=150, bbox_inches='tight')
+
+
+if __name__ == '__main__':
+    main()
